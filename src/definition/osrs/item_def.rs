@@ -30,6 +30,8 @@ pub struct ItemDefinition {
     pub params: HashMap<u32, String>,
     pub inventory_model_data: InventoryModelData,
     pub character_model_data: CharacterModelData,
+    pub weight: u16,
+    pub category: u16,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -132,11 +134,17 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ItemDefin
             8 => {
                 item_def.inventory_model_data.y_offset2d = reader.read_u16()?;
             }
+            9 => {
+                let _ = reader.read_string()?;
+            }
             11 => {
                 item_def.stackable = true;
             }
             12 => {
                 item_def.cost = reader.read_i32()?;
+            }
+            13..=14 => {
+                let _ = reader.read_u8()?;
             }
             16 => item_def.members_only = true,
             23 => {
@@ -152,6 +160,9 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ItemDefin
             }
             26 => {
                 item_def.character_model_data.female_model1 = Some(reader.read_u16()?);
+            }
+            27 => {
+                let _ = reader.read_u8()?;
             }
             30..=34 => {
                 item_def.options[opcode as usize - 30] = reader.read_string()?;
@@ -195,6 +206,9 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ItemDefin
             65 => {
                 item_def.tradable = true;
             }
+            75 => {
+                item_def.weight = reader.read_u16()?;
+            }
             78 => {
                 item_def.character_model_data.male_model12 = Some(reader.read_u16()?);
             }
@@ -212,6 +226,9 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ItemDefin
             }
             93 => {
                 item_def.character_model_data.female_head_model2 = Some(reader.read_u16()?);
+            }
+            94 => {
+                item_def.category = reader.read_u16()?;
             }
             95 => {
                 item_def.inventory_model_data.z_an2d = reader.read_u16()?;

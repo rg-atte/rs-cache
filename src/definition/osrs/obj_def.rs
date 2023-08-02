@@ -31,6 +31,7 @@ pub struct ObjectDefinition {
     pub config_change_dest: Vec<u16>,
     pub params: HashMap<u32, String>,
     pub model_data: ObjectModelData,
+    pub category: u16,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -130,6 +131,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ObjectDef
             22 => {
                 obj_def.model_data.merge_normals = true;
             }
+            23 => { /* skip */ }
             24 => {
                 obj_def.animation_id = reader.read_u16()?;
             }
@@ -164,6 +166,9 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ObjectDef
                         .retexture_replace
                         .push(reader.read_u16()?);
                 }
+            }
+            61 => {
+                obj_def.category = reader.read_u16()?;
             }
             62 => {
                 obj_def.rotated = true;
@@ -242,6 +247,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ObjectDef
             82 => {
                 obj_def.map_area_id = Some(reader.read_u16()?);
             }
+            89 => { /* skip */ }
             92 => {
                 let varp_id = reader.read_u16()?;
                 obj_def.model_data.varp_id = if varp_id == std::u16::MAX {
@@ -268,7 +274,6 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ObjectDef
             249 => {
                 obj_def.params = util::read_parameters(reader)?;
             }
-            23 => { /* skip */ }
             _ => unreachable!(),
         }
     }
