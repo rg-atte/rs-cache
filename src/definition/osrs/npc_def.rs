@@ -229,7 +229,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
             249 => {
                 npc_def.params = util::read_parameters(reader)?;
             }
-            unknown => unimplemented!("Unknown opcode {} when parsing npc definition", unknown),
+            unknown => eprintln!("Unknown opcode {} when parsing npc definition", unknown),
         }
     }
 
