@@ -228,22 +228,22 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
                 npc_def.lowpriorityfollowerops = true;
             }
             114 => {
-                def.animation_data.running = Some(reader.read_u16());
+                npc_def.animation_data.running = Some(reader.read_u16());
             }
             115 => {
-                def.animation_data.running = Some(reader.read_u16());
-                def.animation_data.running_rotate_180 = Some(reader.read_u16());
-                def.animation_data.running_rotate_left = Some(reader.read_u16());
-                def.animation_data.running_rotate_right = Some(reader.read_u16());
+                npc_def.animation_data.running = Some(reader.read_u16());
+                npc_def.animation_data.running_rotate_180 = Some(reader.read_u16());
+                npc_def.animation_data.running_rotate_left = Some(reader.read_u16());
+                npc_def.animation_data.running_rotate_right = Some(reader.read_u16());
             }
             116 => {
-                def.animation_data.crawling = Some(reader.read_u16());
+                npc_def.animation_data.crawling = Some(reader.read_u16());
             }
             117 => {
-                def.animation_data.crawling = Some(reader.read_u16());
-                def.animation_data.crawling_rotate_180 = Some(reader.read_u16());
-                def.animation_data.crawling_rotate_left = Some(reader.read_u16());
-                def.animation_data.crawling_rotate_right = Some(reader.read_u16());
+                npc_def.animation_data.crawling = Some(reader.read_u16());
+                npc_def.animation_data.crawling_rotate_180 = Some(reader.read_u16());
+                npc_def.animation_data.crawling_rotate_left = Some(reader.read_u16());
+                npc_def.animation_data.crawling_rotate_right = Some(reader.read_u16());
             }
             118 => {
                 let varbit_id = reader.read_u16()?;
