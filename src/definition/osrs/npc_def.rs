@@ -193,8 +193,8 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
             107 => npc_def.interactable = false,
             109 => npc_def.model_data.rotate_flag = false,
             111 => {
-                npc_def.follower = true
-                npc_def.lowpriorityfollowerops = true
+                npc_def.follower = true;
+                npc_def.lowpriorityfollowerops = true;
             },
             118 => {
                 let varbit_id = reader.read_u16()?;
