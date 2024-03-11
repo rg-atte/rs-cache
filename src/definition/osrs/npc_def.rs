@@ -168,7 +168,25 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
                 npc_def.model_data.contrast = reader.read_u8()?;
             }
             102 => {
-                npc_def.model_data.head_icon = Some(reader.read_u16()?);
+                // npc_def.model_data.head_icon = Some(reader.read_u16()?);
+                let bitfield = reader.read_u8()? as i32;
+                let mut len: i32 = 0;
+                let mut bitfield_clone = bitfield.clone();
+                
+                while(bitfield_clone != 0) {
+                    bitfield_clone >>= 1;
+                    len += 1;
+                }
+                for i in range(0, len) { 
+					if ((bitfield & 1 << i) == 0)
+					{
+					}
+					else
+					{
+						let _ = reader.read_smart()?;
+						let _ = reader.read_smart_u16()? - 1;
+					}
+                }
             }
             103 => {
                 npc_def.model_data.rotate_speed = reader.read_u16()?;
