@@ -32,6 +32,8 @@ pub struct ItemDefinition {
     pub character_model_data: CharacterModelData,
     pub weight: u16,
     pub category: u16,
+    pub placeholder_id: Option<u16>,
+    pub placeholder_template_id: Option<u16>,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -280,8 +282,11 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ItemDefin
             140 => {
                 item_def.bought_tempalte = Some(reader.read_u16()?);
             }
-            148 | 149 => {
-                reader.read_u16()?;
+            148 => {
+                item_def.placeholder_id = Some(reader.read_u16()?);
+            }
+            149 => {
+                item_def.placeholder_template_id = Some(reader.read_u16()?);
             }
             249 => {
                 item_def.params = util::read_parameters(reader)?;
