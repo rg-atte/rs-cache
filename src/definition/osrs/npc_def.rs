@@ -240,7 +240,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
                 npc_def.animation_data.crawling = Some(reader.read_u16()?);
             }
             117 => {
-                npc_def.animation_data.crawling = Some(reader.read_u16());
+                npc_def.animation_data.crawling = Some(reader.read_u16()?);
                 npc_def.animation_data.crawling_rotate_180 = Some(reader.read_u16()?);
                 npc_def.animation_data.crawling_rotate_left = Some(reader.read_u16()?);
                 npc_def.animation_data.crawling_rotate_right = Some(reader.read_u16()?);
