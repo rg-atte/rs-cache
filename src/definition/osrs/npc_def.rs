@@ -177,7 +177,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
                     bitfield_clone >>= 1;
                     len += 1;
                 }
-                for i in range(0, len) { 
+                for i in 0..len { 
 					if ((bitfield & 1 << i) == 0)
 					{
 					}
