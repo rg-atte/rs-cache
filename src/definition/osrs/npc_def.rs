@@ -27,6 +27,7 @@ pub struct NpcDefinition {
     pub params: HashMap<u32, String>,
     pub model_data: NpcModelData,
     pub animation_data: NpcAnimationData,
+    pub category: u16,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -120,6 +121,9 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
                 npc_def.animation_data.rotate_90_right = Some(reader.read_u16()?);
                 npc_def.animation_data.rotate_90_left = Some(reader.read_u16()?);
             }
+            18 => {
+                npc_def.category = reader.read_u16()?;
+            }
             30..=34 => {
                 npc_def.actions[opcode as usize - 30] = reader.read_string()?;
             }
@@ -195,7 +199,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
             111 => {
                 npc_def.follower = true;
                 npc_def.lowpriorityfollowerops = true;
-            },
+            }
             118 => {
                 let varbit_id = reader.read_u16()?;
                 npc_def.varbit_id = if varbit_id == std::u16::MAX {
