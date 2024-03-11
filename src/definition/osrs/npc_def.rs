@@ -21,7 +21,9 @@ pub struct NpcDefinition {
     pub varbit_id: Option<u16>,
     pub varp_index: Option<u16>,
     pub interactable: bool,
-    pub pet: bool,
+    // pub pet: bool,
+    pub follower: bool,
+    pub lowpriorityfollowerops: bool,
     pub params: HashMap<u32, String>,
     pub model_data: NpcModelData,
     pub animation_data: NpcAnimationData,
@@ -190,7 +192,10 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
             }
             107 => npc_def.interactable = false,
             109 => npc_def.model_data.rotate_flag = false,
-            111 => npc_def.pet = true,
+            111 => {
+                npc_def.follower = true
+                npc_def.lowpriorityfollowerops = true
+            },
             118 => {
                 let varbit_id = reader.read_u16()?;
                 npc_def.varbit_id = if varbit_id == std::u16::MAX {
@@ -215,6 +220,8 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
                     npc_def.configs.push(reader.read_u16()?);
                 }
             }
+            122 => npc_def.follower = true,
+            123 => npc_def.lowpriorityfollowerops = true,
             249 => {
                 npc_def.params = util::read_parameters(reader)?;
             }
