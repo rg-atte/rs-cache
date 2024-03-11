@@ -231,10 +231,14 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<ObjectDef
             78 => {
                 obj_def.ambient_sound_id = reader.read_u16()?;
                 reader.read_u8()?;
+                // Rev220 new
+                reader.read_u8()?;
             }
             79 => {
                 reader.read_u16()?;
                 reader.read_u16()?;
+                reader.read_u8()?;
+                // Rev220 new
                 reader.read_u8()?;
                 let len = reader.read_u8()?;
                 for _ in 0..len {
