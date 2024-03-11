@@ -59,6 +59,14 @@ pub struct NpcAnimationData {
     pub rotate_180: Option<u16>,
     pub rotate_90_left: Option<u16>,
     pub rotate_90_right: Option<u16>,
+    pub crawling: Option<u16>,
+    pub crawling_rotate_left: Option<u16>,
+    pub crawling_rotate_right: Option<u16>,
+    pub crawling_rotate_180: Option<u16>,
+    pub running: Option<u16>,
+    pub running_rotate_left: Option<u16>,
+    pub running_rotate_right: Option<u16>,
+    pub running_rotate_180: Option<u16>,
 }
 
 impl Definition for NpcDefinition {
@@ -183,6 +191,7 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
 					}
 					else
 					{
+                        // Correct length reads, not doing anything. TODO
 						let _ = reader.read_smart()?;
 						let _ = reader.read_smart_u16()? - 1;
 					}
@@ -217,6 +226,24 @@ fn decode_buffer(id: u16, reader: &mut BufReader<&[u8]>) -> io::Result<NpcDefini
             111 => {
                 npc_def.follower = true;
                 npc_def.lowpriorityfollowerops = true;
+            }
+            114 => {
+                def.animation_data.running = Some(reader.read_u16());
+            }
+            115 => {
+                def.animation_data.running = Some(reader.read_u16());
+                def.animation_data.running_rotate_180 = Some(reader.read_u16());
+                def.animation_data.running_rotate_left = Some(reader.read_u16());
+                def.animation_data.running_rotate_right = Some(reader.read_u16());
+            }
+            116 => {
+                def.animation_data.crawling = Some(reader.read_u16());
+            }
+            117 => {
+                def.animation_data.crawling = Some(reader.read_u16());
+                def.animation_data.crawling_rotate_180 = Some(reader.read_u16());
+                def.animation_data.crawling_rotate_left = Some(reader.read_u16());
+                def.animation_data.crawling_rotate_right = Some(reader.read_u16());
             }
             118 => {
                 let varbit_id = reader.read_u16()?;
